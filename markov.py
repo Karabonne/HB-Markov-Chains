@@ -9,9 +9,17 @@ def open_and_read_file(file_path):
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
-
+    
     with open(file_path) as file:
         text = file.read()
+
+    return text
+
+def process_files(*args):
+
+    text = ""
+    for file in args:
+        text += open_and_read_file(file)
 
     return text
 
@@ -75,12 +83,11 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = sys.argv[1]
 chain_length = int(input("Input the number of words to use in your key: "))
 file_length = int(input("Enter the number of sentences to generate: "))
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+input_text = process_files(*sys.argv[1:])
 
 # Get a Markov chain
 chains = make_chains(input_text)

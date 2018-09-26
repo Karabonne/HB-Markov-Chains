@@ -3,16 +3,12 @@
 from random import choice
 import sys
 
-
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
-
-    # your code goes here
-
 
     with open(sys.argv[1]) as file:
         text = file.read()
@@ -47,16 +43,12 @@ def make_chains(text_string):
     words = text_string.split()
     chains = {}
 
-    
-
     for i in range(len(words)-1):
         if i < (len(words) - chain_length):
             new_key = tuple(words[i:(i+chain_length)])
-            print(new_key)
             chains[new_key] = chains.get(new_key, []) + [words[i+chain_length]]
 
 
-    print(chains)
     return chains
 
 
@@ -72,10 +64,9 @@ def make_text(chains):
 
         value = choice(chains[key])
         link = " ".join(key) + " " + value
-        print(type(link))
-        print(link)
         words.append(link)
-        key = (key[1:], value)
+        print(link)
+        key = key[1:] + (value,)
         print(key)
     
 

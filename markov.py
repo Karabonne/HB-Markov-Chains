@@ -13,7 +13,8 @@ def open_and_read_file(file_path):
 
     # your code goes here
 
-    with open(file_path) as file:
+
+    with open(sys.argv[1]) as file:
         text = file.read()
 
     return text
@@ -45,13 +46,17 @@ def make_chains(text_string):
     """
     words = text_string.split()
     chains = {}
-    following_word = []
+
+    
 
     for i in range(len(words)-1):
-        if i < len(words)-2:
-            pair = (words[i], words[i+1])
-            chains[pair] = chains.get(pair, []) + [words[i+2]]
+        if i < (len(words) - chain_length):
+            new_key = tuple(words[i:(i+chain_length)])
+            print(new_key)
+            chains[new_key] = chains.get(new_key, []) + [words[i+chain_length]]
 
+
+    print(chains)
     return chains
 
 
@@ -66,15 +71,19 @@ def make_text(chains):
     while key in chains:
 
         value = choice(chains[key])
-        link = key[0] + " " + key[1] + " " + value
+        link = " ".join(key) + " " + value
+        print(type(link))
+        print(link)
         words.append(link)
-        key = (key[-1], value)
+        key = (key[1:], value)
+        print(key)
     
 
     return " ".join(words)
 
 
 input_path = sys.argv[1]
+chain_length = int(input("Input the number of words to use in your key: "))
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)

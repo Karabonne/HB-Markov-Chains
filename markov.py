@@ -10,7 +10,7 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    with open(sys.argv[1]) as file:
+    with open(file_path) as file:
         text = file.read()
 
     return text
@@ -48,7 +48,6 @@ def make_chains(text_string):
             new_key = tuple(words[i:(i+chain_length)])
             chains[new_key] = chains.get(new_key, []) + [words[i+chain_length]]
 
-
     return chains
 
 
@@ -58,23 +57,27 @@ def make_text(chains):
     words = []
     key_list = list(chains)
     key = choice(key_list)
-    value = choice(chains[key])
+    puctuation = ['!', '?', '.']
 
-    while key in chains:
-
-        value = choice(chains[key])
-        link = " ".join(key) + " " + value
-        words.append(link)
-        print(link)
-        key = key[1:] + (value,)
-        print(key)
     
+    for n in range(file_length):
+
+        while key[0].istitle() is False:
+            key = choice(key_list)
+
+        while key in chains and key[-1][-1] not in puctuation:    
+            value = choice(chains[key])
+            link = " ".join(key) + " " + value
+            words.append(link)
+            key = key[1:] + (value,)
+
 
     return " ".join(words)
 
 
 input_path = sys.argv[1]
 chain_length = int(input("Input the number of words to use in your key: "))
+file_length = int(input("Enter the number of sentences to generate: "))
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
